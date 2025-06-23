@@ -96,7 +96,7 @@ EventManager/
 ### 1. 📥 Clonage du dépôt
 
 ```bash
-git clone https://github.com/ton-compte/EventManager.git
+git clone https://github.com/bin2300/EventManager.git
 cd EventManager
 ```
 
