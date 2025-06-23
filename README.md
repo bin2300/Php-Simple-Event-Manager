@@ -1,10 +1,9 @@
----
+
 
 # 🎉 EventManager — Plateforme complète de gestion d'événements et de billets
 
 > **EventManager** est une application web en PHP & MySQL permettant aux utilisateurs de s’inscrire à des événements, réserver des billets, générer des tickets PDF avec QR code, et aux administrateurs de gérer toute l’activité via une interface dédiée.
 
----
 
 ## 🗂 Sommaire
 
