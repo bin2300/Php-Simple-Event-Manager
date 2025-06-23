@@ -51,6 +51,9 @@ if (!isset($_SESSION['user_id'])) {
             <li class="nav-item">
                 <a class="nav-link" href="../admin/admin.php">🏠 Tableau de bord</a>
             </li>
+                   <li class="nav-item">
+                <a class="nav-link" href="../admin/booking.php">  📅 Booking</a>
+            </li>
             <li class="nav-item">
                 <a class="nav-link" data-bs-toggle="collapse" href="#eventSubmenu" role="button" aria-expanded="false" aria-controls="eventSubmenu">
                     📅 Événements

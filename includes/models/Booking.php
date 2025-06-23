@@ -1,19 +1,23 @@
 <?php
 
-class Booking {
+class Booking
+{
     private $conn;
 
-    public function __construct($db) {
+    public function __construct($db)
+    {
         $this->conn = $db;
     }
 
-    public function addToCart($user_id, $ticket_id, $quantity) {
+    public function addToCart($user_id, $ticket_id, $quantity)
+    {
         $stmt = $this->conn->prepare("INSERT INTO cart (user_id, ticket_id, quantity) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE quantity = quantity + VALUES(quantity)");
         $stmt->bind_param("iii", $user_id, $ticket_id, $quantity);
         return $stmt->execute();
     }
 
-    public function getCart($user_id) {
+    public function getCart($user_id)
+    {
         $stmt = $this->conn->prepare("SELECT cart.id AS cart_id, cart.ticket_id, tickets.type, tickets.price, events.title, cart.quantity
             FROM cart
             JOIN tickets ON cart.ticket_id = tickets.id
@@ -24,13 +28,15 @@ class Booking {
         return $stmt->get_result();
     }
 
-    public function removeFromCart($cart_id) {
+    public function removeFromCart($cart_id)
+    {
         $stmt = $this->conn->prepare("DELETE FROM cart WHERE id = ?");
         $stmt->bind_param("i", $cart_id);
         return $stmt->execute();
     }
 
-    public function checkout($user_id) {
+    public function checkout($user_id)
+    {
         // Obtenir les tickets dans le panier
         $items = $this->getCart($user_id);
         if ($items->num_rows == 0) return false;
@@ -84,5 +90,54 @@ class Booking {
             $this->conn->rollback();
             return false;
         }
+    }
+    // Récupérer les réservations passées et futures de l'utilisateur
+    public function getUserBookings($user_id)
+    {
+        // Suppression de la jointure avec la table 'events'
+        $query = "SELECT b.id AS booking_id, b.total_price, b.booking_date, b.status
+              FROM bookings b
+              WHERE b.user_id = ?
+              ORDER BY b.booking_date DESC";
+
+        $stmt = $this->conn->prepare($query);
+        $stmt->bind_param("i", $user_id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        // Vérifier s'il y a des résultats
+        if ($result->num_rows > 0) {
+            return $result;
+        } else {
+            return false;  // Aucun booking trouvé
+        }
+    }
+
+
+    // Récupérer les détails d'une réservation
+    public function getBookingDetails($booking_id)
+    {
+        $query = "SELECT * FROM booking_items WHERE booking_id = ?";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bind_param("i", $booking_id);
+        $stmt->execute();
+        return $stmt->get_result();
+    }
+
+
+
+
+    // Récupérer les éléments de la réservation (les tickets associés)
+    public function getBookingItems($booking_id)
+    {
+        $query = "SELECT bi.ticket_id, bi.quantity, bi.price, t.type
+                  FROM booking_items bi
+                  JOIN tickets t ON bi.ticket_id = t.id
+                  WHERE bi.booking_id = ?";
+
+        $stmt = $this->conn->prepare($query);
+        $stmt->bind_param("i", $booking_id);
+        $stmt->execute();
+        return $stmt->get_result();
     }
 }

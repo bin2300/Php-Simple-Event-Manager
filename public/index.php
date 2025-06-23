@@ -29,7 +29,7 @@ $db->close();
 
 <!DOCTYPE html>
 <html lang="fr">
-
+  <?php require_once("../includes/components/headers.php");?>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -38,6 +38,7 @@ $db->close();
 </head>
 
 <body>
+   
     <div class="container mt-5">
         <h2>Événements à venir</h2>
 
