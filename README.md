@@ -1,5 +1,3 @@
-Parfait. Voici une version **longue et très complète** de ton `README.md` pour ton projet **EventManager**, avec des sections enrichies, des exemples de flux utilisateur, et une explication technique de chaque composant.
-
 ---
 
 # 🎉 EventManager — Plateforme complète de gestion d'événements et de billets
